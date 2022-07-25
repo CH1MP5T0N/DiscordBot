@@ -19,4 +19,4 @@ async def on_ready():
 #         await ctx.send("%s is straight" % funny)
 
 
-bot.run(os.getenv('TOKEN'))
+bot.run(os.getenv('TOKENKARAOKE'))
