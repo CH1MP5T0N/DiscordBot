@@ -1,15 +1,19 @@
+from asyncio.windows_events import NULL
 from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 import os
-
-
+import lyricsgenius
+import random
+load_dotenv()
+TOKEN = os.getenv('TOKEN')
+geniusKey = "URYL2IOIx69b2C43KbAKNCGLhAa9yY-bidzUdn3TILjI1MNFu2GlLUFh-0xmWDZk"
 bot = commands.Bot(command_prefix='!')
+genius = lyricsgenius.Genius(geniusKey)
 
 
 @bot.event
 async def on_ready():
-    # db.connectDatabase()
     print("I'm online")
 
 
@@ -21,5 +25,26 @@ async def isGay(ctx, *, funny):
         await ctx.send("%s is straight" % funny)
 
 
-load_dotenv('.env')
-bot.run(os.getenv('TOKENKARAOKE'))
+@bot.command()
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+
+
+@bot.command()
+async def leave(ctx):
+    await ctx.voice_client.disconnect()
+
+
+@bot.command()
+async def lyricfind(ctx, *, query):
+    details = query.split("#")
+    artist = genius.search_artist(details[0], max_songs=0)
+    song = artist.song(details[1])
+    if(song.lyrics == NULL):
+        await ctx.send("Lyric failed to load")
+    else:
+        await ctx.channel.send(song.lyrics)
+    return
+
+bot.run('MTAwMDc3NzAxMDg2NTUwNDI1Ng.GN2UCH.AoaqRqwP5n4_CozqdbwbwZcTK_qjF3aqrKKsiA')
