@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 import os
 import lyricsgenius
-import random
+from LoopSystem import Loop_System
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 geniusKey = "URYL2IOIx69b2C43KbAKNCGLhAa9yY-bidzUdn3TILjI1MNFu2GlLUFh-0xmWDZk"
